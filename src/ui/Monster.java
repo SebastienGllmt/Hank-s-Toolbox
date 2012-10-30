@@ -1,4 +1,4 @@
-package com.ui;
+package ui;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -19,11 +19,11 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.ColorTable;
-import com.JSPUtil;
+import graphics.ColorTable;
+import reader.JSPUtil;
 
 import monster.MonsterUtil;
-import com.LoonylandConstant;
+import shared.LoonylandConstant;
 import monster.MonsterDefinition;
 import monster.MonsterDefinitionList;
 
@@ -49,8 +49,6 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 	JButton applyPropButton;
 	JSlider brightnessSlider = new JSlider(JSlider.HORIZONTAL, -31, 31, 0);
 	JSlider offsetSlider = new JSlider(JSlider.HORIZONTAL, -4, 4, 0);
-	static String[] GIFDIRECTORY = { LoonylandConstant.TOOLBOX_DIRECTORY + "/Gifs//Monster.gif", LoonylandConstant.TOOLBOX_DIRECTORY + "/Gifs//PreviousMonster.gif" };
-	int gifIndex = 0;
 	static int FIELDHEIGHT = LoonylandConstant.FIELDHEIGHT;
 	JTextField[] statBox = new JTextField[LoonylandConstant.STATSTODISP];
 	JTextField currentMonsterName = new JTextField();
@@ -88,7 +86,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		titleScreen.setLocation(10, LoonylandConstant.WINDOWSIZE[1]-50);
 		titleScreen.setSize(930, FIELDHEIGHT);
 
-		combo = new JComboBox(monsterDefinitionList.getSortedNameArray()); // Lists all monsters in LL2 in order
+		combo = new JComboBox(monsterDefinitionList.getSortedNameArray(true)); // Lists all monsters in LL2 in order
 		combo.setBackground(Color.white);
 		combo.setForeground(Color.black);
 		combo.setLocation(650, 10);
@@ -98,7 +96,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		monsterLabel.setLocation(570, 10);
 		monsterLabel.setSize(100, FIELDHEIGHT);		
 		
-		int index = monsterDefinitionList.getIndexByName((String) combo.getSelectedItem(), false); // finds which monster is selected
+		int index = monsterDefinitionList.getIndexByName((String) combo.getSelectedItem(), true); // finds which monster is selected
 		MonsterDefinition md = MonsterDefinitionList.allDefinitions[index]; // calls information on said monster
 
 		String[] stdButtonTextArray = {"Preview", "Reset", "Apply Changes"};
@@ -115,9 +113,11 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		exeColorCombo2.setRenderer(new CellColorRenderer());
 		exePanel.add(exeColorCombo2);
 
+		exePreviewButton = new JButton(stdButtonTextArray[0]);
+		exeResetButton = new JButton(stdButtonTextArray[1]);
+		applyExeButton = new JButton(stdButtonTextArray[2]);
 		JButton[] exeButtonArray = {exePreviewButton, exeResetButton, applyExeButton};
 		for(int i=0; i<exeButtonArray.length; i++){
-			exeButtonArray[i] = new JButton(stdButtonTextArray[i]);
 			exeButtonArray[i].addActionListener(this);
 			exeButtonArray[i].setLocation(580+(90*i), 120);
 			if(i==2){
@@ -137,7 +137,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		currentMonsterName.setSize(205, FIELDHEIGHT);
 		currentMonsterName.setLocation(675,95);
 		currentMonsterName.setDocument(new JTextFieldLimit(28));
-		currentMonsterName.setText(md.getName().trim());
+		currentMonsterName.setText(md.getName(true));
 		getContentPane().add(currentMonsterName);
 
 		// Create a box to put all the EXE modifications inside for a better visual feel
@@ -174,9 +174,10 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		Border PropBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Monster Properties");
 		PropPanel.setBorder(PropBorder);
 
+		propResetButton = new JButton(stdButtonTextArray[1]);
+		applyPropButton = new JButton(stdButtonTextArray[2]);
 		JButton[] propButtonArray = {propResetButton, applyPropButton};
 		for(int i=0; i<propButtonArray.length; i++){
-			propButtonArray[i] = new JButton(stdButtonTextArray[i+1]);
 			propButtonArray[i].addActionListener(this);
 			propButtonArray[i].setLocation(50+(260*i), 567);
 			propButtonArray[i].setSize(250-(22*i), FIELDHEIGHT);
@@ -234,9 +235,11 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		pngBox.setSize(200, FIELDHEIGHT);
 		JSPPanel.add(pngBox);
 		
+		jspPreviewButton = new JButton(stdButtonTextArray[0]);
+		jspResetButton = new JButton(stdButtonTextArray[1]);
+		applyJspButton = new JButton(stdButtonTextArray[2]);
 		JButton[] buttonArray = {jspPreviewButton, jspResetButton, applyJspButton};
 		for(int i=0;i<buttonArray.length; i++){
-			buttonArray[i] = new JButton(stdButtonTextArray[i]);
 			buttonArray[i].addActionListener(this);
 			buttonArray[i].setLocation(580+(90*i), 565);
 			buttonArray[i].setSize(80, FIELDHEIGHT);
@@ -333,7 +336,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 	}
 
 	private void resetStat(int id) {
-		int index = monsterDefinitionList.getIndexByName((String) combo.getSelectedItem(), false); // Gets monster currently selected
+		int index = monsterDefinitionList.getIndexByName((String) combo.getSelectedItem(), true); // Gets monster currently selected
 		MonsterDefinition md = MonsterDefinitionList.allDefinitions[index];
 		// checks id of box and sets to value accordingly
 		if (id == 0) {
@@ -352,10 +355,9 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		int index = monsterDefinitionList.getIndexByName((String) combo.getSelectedItem(), false); // Gets monster selected
+		int index = monsterDefinitionList.getIndexByName((String) combo.getSelectedItem(), true); // Gets monster selected
 		MonsterDefinition md = MonsterDefinitionList.allDefinitions[index];
 		int[] colors = md.getColors();
-
 		if (evt.getSource() == exePreviewButton) {
 			setPreview(exeColorCombo1, exeColorCombo2, md);
 		} else if (evt.getSource() == exeResetButton) {
@@ -363,7 +365,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 			exeColorCombo2.setSelectedIndex(colors[1]);
 			colors[2] = -1; // resets temp variables
 			colors[3] = -1;
-			currentMonsterName.setText(md.getName().trim());
+			currentMonsterName.setText(md.getName(true));
 			md.setColors(colors);
 			init(false, false); // redraw
 		} else if (evt.getSource() == applyExeButton) {
@@ -375,10 +377,10 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 				} else{
 					fileUtile.exeColorNameChange(index, currentMonsterName.getText(), colors[0], colors[1]);
 				}
-				String oldName = md.getName();
-				md.setName(currentMonsterName.getText().trim());
-				combo.addItem(md.getName().trim());
-				combo.setSelectedItem(md.getName().trim());
+				String oldName = md.getName(true);
+				md.setName(currentMonsterName.getText());
+				combo.addItem(md.getName(true));
+				combo.setSelectedItem(md.getName(true));
 				combo.removeItem(oldName);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -395,19 +397,37 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 				resetStat(i); // resets all stats one by one
 			}
 		} else if (evt.getSource() == jspPreviewButton || evt.getSource() == applyJspButton) {
-			int[] offsetColor = {brightnessSlider.getValue(), offsetSlider.getValue()*32};
+			System.out.println("GOTTEN");
 			int[] colorIndexes = new int[8];
+			JSPUtil util = new JSPUtil(md.getJspName(false), cTable.getPalette());
 			MonsterUtil jspWrite = new MonsterUtil();
 			for (int i = 0; i < 8; i++) {
 				colorIndexes[i] = jspColorCombo[i].getSelectedIndex();
 			}
 			try {
+				System.out.println("TRY");
 				if(evt.getSource() == jspPreviewButton){
-					jspLocation = md.getJspName();
-					jspWrite.jspCopy(jspLocation);
+					jspLocation = md.getJspName(false);
+					util.writeJSP(jspLocation + "_2.jsp");
 					md.setJspName("graphics/temp.jsp");
 				}
-				jspWrite.readWriteJSP(md, colorIndexes, offsetColor, randomiseBox.isSelected());
+				for(int i=0; i<8; i++){
+					if(i != colorIndexes[i]){
+						util.recolorAll(new int[]{0,1,2,3,4,5,6,7}, colorIndexes);
+						break;
+					}
+				}
+				if(brightnessSlider.getValue() != 0){
+					util.light(brightnessSlider.getValue());
+				}
+				if(offsetSlider.getValue() != 0){
+					util.shift(offsetSlider.getValue());
+				}
+				if(randomiseBox.isSelected()){
+					util.randomColors();
+				}
+				System.out.println("WRITE");
+				util.writeJSP(md.getJspName(true));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -437,7 +457,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		colors[2] = exeColorCombo1.getSelectedIndex();
 		colors[3] = exeColorCombo2.getSelectedIndex();
 		md.setColors(colors);
-		init(false, false); // redraw
+		init(false, true); // redraw
 	}
 
 	private static class CellColorRenderer extends DefaultListCellRenderer {
@@ -461,17 +481,17 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 	}
 
 	private void init(boolean changedMonster, boolean tempBased) {
-		int index = monsterDefinitionList.getIndexByName((String) combo.getSelectedItem(), false); // gets selected monster
+		int index = monsterDefinitionList.getIndexByName((String) combo.getSelectedItem(), true); // gets selected monster
 		MonsterDefinition md = MonsterDefinitionList.allDefinitions[index];
 
 		// Print gif
-		File f = new File(md.getJspName());
+		File f = new File(md.getJspName(true));
 		JSPUtil util = new JSPUtil(f, LoonylandConstant.TOOLDIR);
-		String gifName = GIFDIRECTORY[(gifIndex++) % 2]; // gets directory in which to print gif
+		String gifName = LoonylandConstant.TOOLBOX_DIRECTORY + "/Gifs/" + md.getName(true) + ".gif";
 		if (tempBased == true) {
 			md.setJspName("graphics/temp.jsp");
 		}
-		util.writeGif(gifName, pngBox.isSelected());
+		util.writeGif(LoonylandConstant.TOOLBOX_DIRECTORY, "/Gifs/" + md.getName(true), "/Images/" + md.getName(true), pngBox.isSelected());
 		if(tempBased == true){
 			md.setJspName(jspLocation);
 		}
@@ -487,7 +507,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 			exeColorCombo2.setSelectedIndex(md.getColors()[1]);
 		}
 		if (changedMonster == true) {
-			currentMonsterName.setText(md.getName().trim());
+			currentMonsterName.setText(md.getName(true));
 			statBox[0].setText(String.valueOf(md.getLevel()));
 			statBox[1].setText(String.valueOf(md.getHP1() + (md.getHP2() * 256)));
 			statBox[2].setText(String.valueOf(md.getArmor()));

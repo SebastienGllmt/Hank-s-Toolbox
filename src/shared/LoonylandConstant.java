@@ -1,4 +1,4 @@
-package com;
+package shared;
 
 public interface LoonylandConstant {
 	int[] MONSTER_START_BYTE = {574933,570637};

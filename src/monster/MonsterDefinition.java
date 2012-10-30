@@ -1,6 +1,6 @@
 package monster;
 
-import com.LoonylandConstant;
+import shared.LoonylandConstant;
 
 public class MonsterDefinition {
 	private String name;
@@ -121,8 +121,12 @@ public class MonsterDefinition {
 		this.refIndex = refIndex;
 	}
 
-	public String getName() {
-		return name;
+	public String getName(boolean trimmed) {
+		String fullName = name;
+		if(trimmed){
+			fullName = fullName.trim();
+		}
+		return fullName;
 	}
 
 	public void setName(String name) {
@@ -137,8 +141,12 @@ public class MonsterDefinition {
 		this.colors = colors;
 	}
 
-	public String getJspName() {
-		return jspName;
+	public String getJspName(boolean trimmed) {
+		String fullName = jspName;
+		if(trimmed){
+			fullName = fullName.trim();
+		}
+		return fullName;
 	}
 
 	public void setJspName(String jspName) {

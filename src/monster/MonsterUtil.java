@@ -12,8 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import com.JSPreader;
-import com.LoonylandConstant;
+import shared.LoonylandConstant;
 
 public class MonsterUtil {
 
@@ -150,119 +149,5 @@ public class MonsterUtil {
 		if (out != null) {
 			out.close();
 		}
-	}
-	
-	public void readWriteJSP(MonsterDefinition md, int[] colorResult, int[] offsetColor, boolean randomise) throws IOException {
-		String monsterName = md.getJspName().trim();
-		File doesOldExist = new File(monsterName.replace(".", "_old."));
-		if(doesOldExist.exists() == true){
-			doesOldExist.delete();
-		}
-		String previousFile = monsterName;
-		File oldPicture = new File(previousFile);
-		String oldFile = null;
-		String newFile = null;
-		oldPicture.renameTo(new File(monsterName.replace(".", "_old.")));
-		oldFile = monsterName.replace(".", "_old.");
-		newFile = monsterName;
-
-		try {
-			in = new FileInputStream(oldFile);
-			out = new FileOutputStream(newFile);
-
-			int a = in.read();
-			out.write(a);
-			int b = in.read();
-			out.write(b);
-			int count = 2;
-			int imageCount = JSPreader.convert(a, b);
-			int offset = 2 + (imageCount * 16);
-
-			while ((c = in.read()) != -1) {
-				if (count < offset) {
-					out.write(c);
-				} else {
-					if (c > 128) {
-						out.write(c);
-					} else {
-						out.write(c);
-						for (int i = 0; i < c; i++) {
-							int abc = in.read();
-							if(randomise == true && abc != 0){
-								abc = (int) (Math.random()*255);
-							}
-							int shiftedValue = Shift(abc, offsetColor[1]);
-							int newRange = shiftedValue / 32;
-							out.write(Brightness(Transpose(Shift(abc, offsetColor[1]), colorResult[newRange]),offsetColor[0]));
-						}
-					}
-				}
-				count++;
-			}
-
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(frame, "JSP not found!", "File Not Found", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			if (in != null) {
-				in.close();
-			}
-			if (out != null) {
-				out.close();
-			}
-		}
-	}
-	
-	public void jspCopy(String filename) throws IOException{
-		outputFilename = "graphics/temp.jsp";
-		try{
-			in = new FileInputStream(filename);
-			out = new FileOutputStream(outputFilename);
-		} catch(FileNotFoundException e){
-			JOptionPane.showMessageDialog(frame, "JSP Could Not be Copied", "JSP Error", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		File doesOldExist = new File(outputFilename);
-		if(doesOldExist.exists() == true){
-			doesOldExist.delete(); //deletes temp.jsp to make room for new one
-		}
-		while ((c = in.read()) != -1) {
-			out.write(c);
-		}
-		if (in != null) {
-			in.close();
-		}
-		if (out != null) {
-			out.close();
-		}
-	}
-
-	private int Transpose(int value, int newRange) {
-		return ((value % 32) + (newRange * 32));
-	}
-	private int Brightness(int value, int offsetColor){
-		if(offsetColor == 0){
-			return value;
-		}
-		int range = value/32;
-		int base = value%32;
-		int newColor = base+offsetColor;
-		if(newColor < 1){
-			newColor = 1;
-		} else if (newColor >30){
-			newColor = 30;
-		}
-		return newColor+(range*32);
-	}
-	private int Shift(int value, int offsetColor){
-		if(offsetColor == 0){
-			return value;
-		}
-		int newColor = value+offsetColor;
-		if(newColor>255){
-			newColor-=256;
-		}else if(newColor<0){
-			newColor+=256;
-		}
-		return newColor;
 	}
 }

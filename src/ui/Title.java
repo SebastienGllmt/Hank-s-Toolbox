@@ -1,4 +1,4 @@
-package com.ui;
+package ui;
 
 /* Add delay on selecting different monsters (?)
  * Fix Teddies (?)
@@ -17,7 +17,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 
-import com.LoonylandConstant;
+import shared.LoonylandConstant;
 
 import javax.swing.*;
 

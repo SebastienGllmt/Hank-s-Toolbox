@@ -1,4 +1,4 @@
-package com.ui;
+package ui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -14,8 +14,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import com.JSPUtil;
-import com.LoonylandConstant;
+import reader.JSPUtil;
+import shared.LoonylandConstant;
 import monster.MonsterDefinition;
 import monster.MonsterDefinitionList;
 

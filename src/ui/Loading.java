@@ -1,9 +1,6 @@
-package com.ui;
+package ui;
 
-import java.awt.BorderLayout;
-import java.io.File;
-
-import com.LoonylandConstant;
+import shared.LoonylandConstant;
 
 import javax.swing.*;
 

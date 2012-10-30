@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import com.LoonylandConstant;
+import shared.LoonylandConstant;
 
 public class MonsterDefinitionList {
 	public static MonsterDefinition[] allDefinitions;
@@ -17,19 +17,16 @@ public class MonsterDefinitionList {
 
 		for (int i = 0; i < allDefinitions.length; i++) {
 			if (allDefinitions[i].getRefIndex() != 0) {
-				allDefinitions[i].setJspName(allDefinitions[allDefinitions[i].getRefIndex() - 1].getJspName());
+				allDefinitions[i].setJspName(allDefinitions[allDefinitions[i].getRefIndex() - 1].getJspName(false));
 			}
 		}
 		return true;
 	}
 
-	public int getIndexByName(String Name, boolean trimmed) { //finds which id the monster has using its name
+	public int getIndexByName(String searchedName, boolean trimmed) { //finds which id the monster has using its name
 		for (int i = 0; i < allDefinitions.length; i++) {
-			String name = allDefinitions[i].getName();
-			if(trimmed){
-				name = name.trim();
-			}
-			if (name.equalsIgnoreCase(Name)) {
+			String name = allDefinitions[i].getName(trimmed);
+			if (name.equalsIgnoreCase(searchedName)) {
 				return i;
 			}
 		}
@@ -39,18 +36,15 @@ public class MonsterDefinitionList {
 	}
 	
 	public String getNameByIndex(int id, boolean trimmed){
-		String name = allDefinitions[id].getName();
-		if(trimmed){
-			name = name.trim();
-		}
+		String name = allDefinitions[id].getName(trimmed);
 		return name;
 	}
 
-	public String[] getSortedNameArray() {
+	public String[] getSortedNameArray(boolean trimmed) {
 		String[] monstersNames = new String[allDefinitions.length];
 
 		for (int i = 0; i < allDefinitions.length; i++) {
-			monstersNames[i] = allDefinitions[i].getName();
+			monstersNames[i] = allDefinitions[i].getName(trimmed);
 		}
 		Arrays.sort(monstersNames);
 		return monstersNames;
