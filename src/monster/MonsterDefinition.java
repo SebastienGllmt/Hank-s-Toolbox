@@ -15,9 +15,11 @@ public class MonsterDefinition {
 	private int rarity;
 	private String jspName;
 	private int refIndex;
+	private int monsID;
 	
-	MonsterDefinition(int[] def) {
+	MonsterDefinition(int id, int[] def) {
 		// extract name
+		monsID = id;
 		name = extractValue(def, 0, 28);
 
 		// extract stats
@@ -31,15 +33,9 @@ public class MonsterDefinition {
 		rarity = def[LoonylandConstant.ITEM_RARITY];
 		
 		//extract colors
-		colors = new int[4];
+		colors = new int[2];
 		colors[0] = def[LoonylandConstant.COLOR_SELECTED_BYTE_OFFSET];
 		colors[1] = def[LoonylandConstant.COLOR_RESULT_BYTE_OFFSET];
-		if(colors[0] == 255){
-			colors[0] = 0;
-			colors[1] = 0;
-		}
-		colors[2] = -1;
-		colors[3] = -1;
 		
 		String val = extractValue(def, 57, 32); //Get location of monster jsps for all monsters
 		if (val.charAt(0) == '!') { //if Monsters takes jsp from another monster
@@ -49,6 +45,9 @@ public class MonsterDefinition {
 		}
 	}
 
+	public int getID(){
+		return monsID;
+	}
 	public int getLevel() {
 		return level;
 	}
@@ -60,19 +59,25 @@ public class MonsterDefinition {
 	public int getHP1() {
 		return HP1;
 	}
-
-	public void setHP1(int hP1) {
-		HP1 = hP1;
+	public void setHP1(int HP1) {
+		this.HP1 = HP1;
 	}
 
 	public int getHP2() {
 		return HP2;
 	}
-
-	public void setHP2(int hP2) {
-		HP2 = hP2;
+	public void setHP2(int HP2) {
+		this.HP2 = HP2;
 	}
-
+	
+	public int getHP(){
+		return (HP1 + HP2*256);
+	}
+	public void setHP(int hp){
+		this.HP1 = hp%256;
+		this.HP2 = hp/256;
+	}
+	
 	public int getArmor() {
 		return armor;
 	}
@@ -84,7 +89,6 @@ public class MonsterDefinition {
 	public int getDmg1() {
 		return dmg1;
 	}
-
 	public void setDmg1(int dmg1) {
 		this.dmg1 = dmg1;
 	}
@@ -92,13 +96,20 @@ public class MonsterDefinition {
 	public int getDmg2() {
 		return dmg2;
 	}
+	public void setDmg2(int dmg2) {
+		this.dmg2 = dmg2;
+	}
+	
+	public int getDmg(){
+		return (dmg1 + (dmg2*256));
+	}
+	public void setDmg(int damage){
+		this.dmg1 = damage%256;
+		this.dmg2 = damage/256;
+	}
 	
 	public int getSpeed(){
 		return speed;
-	}
-
-	public void setDmg2(int dmg2) {
-		this.dmg2 = dmg2;
 	}
 	
 	public void setSpeed(int speed){

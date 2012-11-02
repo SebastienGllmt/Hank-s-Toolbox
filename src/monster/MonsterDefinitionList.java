@@ -79,7 +79,7 @@ public class MonsterDefinitionList {
 					def[byteIndex] = c;
 					if (byteIndex == monsterLength - 1) {
 
-						MonsterDefinition m = new MonsterDefinition(def);
+						MonsterDefinition m = new MonsterDefinition(monsterID, def);
 						allMonsters[monsterID] = m;
 					}
 

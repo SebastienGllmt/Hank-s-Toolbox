@@ -79,7 +79,7 @@ public class MonsterUtil {
 		}
 	}
 	
-	public void exeColorNameChange(int monsterID, String monsterName, int byteValueColor1, int byteValueColor2) throws Exception {
+	public void exeColorNameChange(int monsterID, String monsterName, int byteValueColor1, int byteValueColor2) throws IOException {
 		modifySetup();
 		int versionID = MonsterDefinitionList.getVersionNumber(LoonylandConstant.LOONYLANDEXE.replace(".","_old."));
 		long monsterStart = LoonylandConstant.MONSTER_START_BYTE[versionID]+ (monsterID * LoonylandConstant.MONSTER_LENGTH);
@@ -93,7 +93,7 @@ public class MonsterUtil {
 			} else if (count == AddressColor2) {
 				c = byteValueColor2;
 			}else if(count >= monsterStart && count < monsterStart + LoonylandConstant.MONSTER_NAME_LENGTH){
-				if(count < monsterStart+ monsterName.length()){
+				if(count < monsterStart + monsterName.length()){
 					c = monsterName.substring(position, position+1).getBytes()[0];
 					position++;
 				}else{
@@ -111,7 +111,7 @@ public class MonsterUtil {
 		}
 	}
 
-	public void readWriteStats(int monsterID, JTextField[] statBox) throws Exception {
+	public void readWriteStats(int monsterID, JTextField[] statBox) throws IOException {
 		modifySetup();
 		int versionID = MonsterDefinitionList.getVersionNumber(LoonylandConstant.LOONYLANDEXE.replace(".","_old."));
 		int start = LoonylandConstant.MONSTER_START_BYTE[versionID] + (monsterID * LoonylandConstant.MONSTER_LENGTH);
