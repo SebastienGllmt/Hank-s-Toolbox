@@ -25,7 +25,7 @@ import monster.MonsterDefinitionList;
  */
 @SuppressWarnings("serial")
 public class Profile extends JFrame implements ActionListener, FocusListener {
-	JComboBox JSPCombo;
+	JComboBox<String> JSPCombo;
 	MonsterDefinitionList monsterDefinitionList = new MonsterDefinitionList();
 	JButton titleScreen;
 	JButton exePreviewButton;
@@ -79,7 +79,7 @@ public class Profile extends JFrame implements ActionListener, FocusListener {
 		for(int i=0; i<validMonsterID.length; i++){
 			validMonsterNames[i] = monsterDefinitionList.getNameByIndex(validMonsterID[i], false);
 		}
-		JSPCombo = new JComboBox(validMonsterNames);
+		JSPCombo = new JComboBox<String>(validMonsterNames);
 		JSPCombo.setBackground(Color.white);
 		JSPCombo.setForeground(Color.black);
 		JSPCombo.setLocation(400, 40);
@@ -170,10 +170,10 @@ public class Profile extends JFrame implements ActionListener, FocusListener {
 		MonsterDefinition md = MonsterDefinitionList.allDefinitions[index];
 		
 		//write gif
-		File f = new File(md.getJspName());
+		File f = new File(md.getJspName(true));
 		JSPUtil util = new JSPUtil(f, LoonylandConstant.TOOLDIR);
 		String gifName = GIFDIRECTORY[(gifIndex++) % 2]; //gets directory in which to print gif
-		util.writeGif(gifName, false);
+		util.writeGif(gifName);
 		ii = new ImageIcon(gifName);
 		imageLabel.setIcon(ii);
 	}
