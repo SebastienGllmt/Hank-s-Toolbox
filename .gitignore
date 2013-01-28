@@ -1,6 +1,18 @@
 *.class
+*.classpath
+*.project
+*.settings
 
 # Package Files #
+Loonyland2_Ce/*
+Loonyland2_noCe/*
+graphics/*
+music/*
+profiles/*
+sound/*
 *.jar
 *.war
 *.ear
+*.llw
+*.exe
+*.dll
