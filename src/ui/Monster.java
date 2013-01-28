@@ -48,10 +48,10 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 	private final String[] STD_BTN_TXT = {"Preview", "Reset", "Apply Changes"};
 	private final Border STD_BORDER = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 	
-	private JComboBox combo;
+	private JComboBox<String> combo;
 	private MonsterDefinition md;
 	
-	private JComboBox[] exeColorCombo = new JComboBox[2];
+	private JComboBox<Color>[] exeColorCombo = new JComboBox[2];
 	private JButton exePreviewButton = new JButton(STD_BTN_TXT[0]);
 	private JButton exeResetButton = new JButton(STD_BTN_TXT[1]);
 	private JButton exeApplyButton = new JButton(STD_BTN_TXT[2]);
@@ -65,7 +65,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 	private JButton propApplyButton = new JButton(STD_BTN_TXT[2]);
 	private JButton[] propButtonArray = {propResetButton, propApplyButton};
 	
-	JComboBox[] jspColorCombo = new JComboBox[8];
+	JComboBox<Color>[] jspColorCombo = new JComboBox[8];
 	
 	private JSlider brightnessSlider = new JSlider(JSlider.HORIZONTAL, -31, 31, 0);
 	private JSlider offsetSlider = new JSlider(JSlider.HORIZONTAL, -4, 4, 0);
@@ -109,7 +109,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		getContentPane().setLayout(null);
 	
 		/*			Monster Combo			*/
-		combo = new JComboBox(monsterDefinitionList.getSortedNameArray(true)); // Lists all monsters in LL2 in order
+		combo = new JComboBox<String>(monsterDefinitionList.getSortedNameArray(true)); // Lists all monsters in LL2 in order
 		combo.setBackground(Color.WHITE);
 		combo.setForeground(Color.BLACK);
 		combo.setLocation(650, 10);
@@ -130,7 +130,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 		
 		//Creates the combo boxes to edit monster colours
 		for(int i=0; i<exeColorCombo.length; i++){
-			exeColorCombo[i] = new JComboBox(colors); // First colour box for EXE modifications
+			exeColorCombo[i] = new JComboBox<Color>(colors); // First colour box for EXE modifications
 			exeColorCombo[i].setRenderer(new CellColorRenderer());
 			exePanel.add(colorLabelArray[i]);
 			exePanel.add(exeColorCombo[i]);
@@ -211,7 +211,7 @@ public class Monster extends JFrame implements ActionListener, FocusListener, Ch
 			jspColorText[i].setEditable(false);
 			JSPInternalPanel.add(jspColorText[i]);
 			
-			jspColorCombo[i] = new JComboBox(colors); // Create combo box with corresponding colour
+			jspColorCombo[i] = new JComboBox<Color>(colors); // Create combo box with corresponding colour
 			jspColorCombo[i].setSelectedIndex(i);
 			jspColorCombo[i].setRenderer(new CellColorRenderer());
 			JSPInternalPanel.add(jspColorCombo[i]);
