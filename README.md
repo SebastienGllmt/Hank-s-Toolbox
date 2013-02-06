@@ -6,3 +6,7 @@ This is a tool used to modify various aspects of the game Loonyland 2 by Hamumu 
 Modifications include, for example, modification of monster appearances and stats.
 
 This project depends on the existance of the JSP Reader project.
+
+Special thanks:
+	* Tad Hardesty
+	* Eric Guillemot
