@@ -10,3 +10,5 @@ This project depends on the existance of the JSP Reader project.
 Special thanks:
 	* Tad Hardesty
 	* Eric Guillemot
+
+![Screenshot](http://i.imgur.com/geECV61.png)
